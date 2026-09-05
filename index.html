@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f2742">
+<title>藥物副作用值班生存訓練｜50 題互動版</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>">
+<style>
+:root{--navy:#0f2742;--navy2:#183b63;--amber:#d6a226;--cream:#fbf8f1;--paper:#fff;--text:#18212b;--muted:#687381;--line:#dfe4ea;--red:#a13a3a;--redbg:#fff1f0;--blue:#2b628f;--bluebg:#eef6fb;--green:#2f6f53;--greenbg:#edf8f1;--goldbg:#fff8df;--shadow:0 8px 24px rgba(15,39,66,.08)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;background:#f3f5f7;color:var(--text);line-height:1.55}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:1100px;margin:auto;min-height:100vh;background:var(--paper)}
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:26px 20px 18px}
+.hero .kicker{font-size:.78rem;letter-spacing:.14em;opacity:.78;text-transform:uppercase}
+.hero h1{margin:5px 0 6px;font-size:clamp(1.7rem,4.5vw,2.65rem);line-height:1.16}
+.hero p{margin:0;opacity:.88;max-width:780px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{border:1px solid rgba(255,255,255,.24);padding:5px 9px;border-radius:999px;font-size:.78rem;background:rgba(255,255,255,.08)}
+.tabs{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;overflow:auto;padding:8px 10px;gap:6px}
+.tab{border:0;background:transparent;padding:10px 13px;border-radius:10px;color:#46515f;white-space:nowrap;font-weight:700}
+.tab.active{background:var(--navy);color:#fff}
+main{padding:18px}
+.section{display:none}
+.section.active{display:block}
+.grid-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat b{display:block;font-size:1.55rem;color:var(--navy)}
+.stat span{font-size:.78rem;color:var(--muted)}
+.panel{border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0;background:#fff}
+.panel h2,.panel h3{margin-top:0}
+.callout{border-left:5px solid var(--amber);background:var(--goldbg);padding:13px 14px;border-radius:10px;margin:12px 0}
+.callout.red{border-color:var(--red);background:var(--redbg)}
+.callout.blue{border-color:var(--blue);background:var(--bluebg)}
+.callout.green{border-color:var(--green);background:var(--greenbg)}
+.callout strong{display:block;margin-bottom:3px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:0;border-radius:10px;padding:10px 13px;background:var(--navy);color:#fff;font-weight:700;min-height:44px}
+.btn.secondary{background:#eef2f6;color:var(--navy);border:1px solid var(--line)}
+.btn.danger{background:#7d2e2e}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.input,.select{border:1px solid #cfd6de;border-radius:10px;padding:10px 11px;background:#fff;min-height:44px;color:var(--text)}
+.input{min-width:220px;flex:1}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.progress{height:9px;background:#e8edf2;border-radius:999px;overflow:hidden}
+.progress>div{height:100%;background:var(--amber);width:0;transition:width .25s}
+.cards{display:grid;gap:10px}
+.knowledge{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.khead{display:flex;gap:10px;align-items:flex-start;padding:13px 14px}
+.num{width:38px;height:38px;border-radius:11px;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800;flex:0 0 auto}
+.kmeta{min-width:0;flex:1}
+.kmeta h3{margin:0;font-size:1rem}
+.kmeta small{color:var(--muted)}
+.rate{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.rate button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font-size:.8rem}
+.rate button.sel.know{background:var(--greenbg);border-color:#8ab79c;color:var(--green)}
+.rate button.sel.fuzzy{background:var(--goldbg);border-color:#d6b354;color:#7c5b0a}
+.rate button.sel.no{background:var(--redbg);border-color:#d69b9b;color:var(--red)}
+.details{border-top:1px solid var(--line);padding:0 14px 14px}
+.details summary{padding:12px 0 8px;font-weight:700;color:var(--navy);cursor:pointer}
+.flashcard{min-height:330px;display:flex;flex-direction:column;justify-content:space-between}
+.flash-q{font-size:clamp(1.25rem,3.5vw,1.8rem);font-weight:800;color:var(--navy);margin:8px 0}
+.flash-answer{display:none}
+.flash-answer.show{display:block}
+.quiz-wrap{max-width:780px;margin:auto}
+.quiz-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.quiz-stem{font-size:1.17rem;font-weight:800;margin:10px 0 16px}
+.option{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px;margin:8px 0;min-height:48px}
+.option:hover{border-color:#9fb0c2}
+.option.correct{border-color:#67a27e;background:var(--greenbg)}
+.option.wrong{border-color:#c57373;background:var(--redbg)}
+.option.lock{pointer-events:none}
+.feedback{display:none;margin-top:14px;padding:13px;border-radius:12px}
+.feedback.show{display:block}
+.feedback.good{background:var(--greenbg);border:1px solid #a8cdb7}
+.feedback.bad{background:var(--redbg);border:1px solid #e0b0b0}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th,td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{background:#f4f6f8;color:var(--navy)}
+.check6{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.checkitem{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:flex-start}
+.checkitem input{width:20px;height:20px;margin-top:2px}
+.muted{color:var(--muted)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#eef2f6;color:var(--navy);font-size:.74rem;font-weight:700}
+.footer{padding:20px;background:#f6f7f9;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#162333;color:#fff;padding:10px 14px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:99}
+.toast.show{opacity:1}
+@media(max-width:720px){
+ .grid-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .check6{grid-template-columns:1fr}
+ main{padding:12px}
+ .hero{padding:22px 16px 15px}
+ .tab{padding:9px 10px}
+}
+@media print{.tabs,.actions,.toolbar,.rate,.btn{display:none!important}.section{display:block!important}body{background:#fff}.app{max-width:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <div class="kicker">Medication Adverse Effects · Duty Trainer</div>
+  <h1>藥物副作用值班生存訓練</h1>
+  <p>把「50 題清單」改造成可反覆自評、抽卡、跑值班情境、查 antidote 的單頁離線學習工具。</p>
+  <div class="hero-meta">
+    <span class="pill">50 題 Checklist</span><span class="pill">30 題 Case Challenge</span><span class="pill">錯題/進度本機保存</span><span class="pill">CSV 匯出</span>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="學習模式">
+  <button class="tab active" data-tab="home">總覽</button>
+  <button class="tab" data-tab="checklist">50 題自評</button>
+  <button class="tab" data-tab="flash">抽卡複習</button>
+  <button class="tab" data-tab="quiz">值班情境</button>
+  <button class="tab" data-tab="antidote">Antidote</button>
+  <button class="tab" data-tab="safety">30 秒開藥檢查</button>
+</nav>
+
+<main>
+<section id="home" class="section active">
+  <div class="grid-stats">
+    <div class="stat"><b id="statKnown">0</b><span>已會</span></div>
+    <div class="stat"><b id="statFuzzy">0</b><span>模糊</span></div>
+    <div class="stat"><b id="statUnknown">0</b><span>不會</span></div>
+    <div class="stat"><b id="statQuiz">—</b><span>最近情境分數</span></div>
+  </div>
+  <div class="panel">
+    <h2>使用方式</h2>
+    <p>原教材的核心不是「看完」，而是先辨認自己的缺口。我把它做成三段式：</p>
+    <div class="callout"><strong>① 先自評 50 題</strong>標「會／模糊／不會」，不要先偷看提示。</div>
+    <div class="callout blue"><strong>② 抽卡補洞</strong>只抽「模糊＋不會」，看完一句話重點後自己重新評分。</div>
+    <div class="callout red"><strong>③ 跑值班情境</strong>不是背藥名，而是練「看到新症狀 → 翻藥單 → 先做什麼」。</div>
+  </div>
+  <div class="panel">
+    <h3>目前進度</h3>
+    <div class="progress" aria-label="自評完成度"><div id="homeProgress"></div></div>
+    <p class="muted" id="homeProgressText">尚未開始。</p>
+    <div class="actions">
+      <button class="btn" id="goChecklist">開始 50 題自評</button>
+      <button class="btn secondary" id="exportCsv">匯出學習紀錄 CSV</button>
+      <button class="btn secondary" id="printBtn">列印 / 存 PDF</button>
+      <button class="btn danger" id="resetBtn">清除進度</button>
+    </div>
+  </div>
+  <div class="callout green">
+    <strong>版本定位</strong>
+    Personal Study Edition v1.0｜內容依你提供的 Day 6 教材整理，未另外做外部 guideline 更新。臨床決策仍以仿單、院內規範、藥師與主治團隊為準。
+  </div>
+</section>
+
+<section id="checklist" class="section">
+  <div class="panel">
+    <h2>50 題自評</h2>
+    <p class="muted">建議標準：不是「有印象」，而是你能講出幾個具體藥名，並知道值班第一步要做什麼。</p>
+    <div class="toolbar">
+      <input id="search" class="input" type="search" placeholder="搜尋：QT、HIT、孕婦、NG、Vancomycin…">
+      <select id="chapterFilter" class="select" aria-label="章節篩選"><option value="">全部章節</option></select>
+      <select id="ratingFilter" class="select" aria-label="熟悉度篩選">
+        <option value="">全部熟悉度</option><option value="know">會</option><option value="fuzzy">模糊</option><option value="no">不會</option><option value="unrated">未評</option>
+      </select>
+    </div>
+    <div class="progress"><div id="checkProgress"></div></div>
+    <p class="muted" id="checkProgressText"></p>
+  </div>
+  <div id="knowledgeList" class="cards"></div>
+</section>
+
+<section id="flash" class="section">
+  <div class="panel flashcard">
+    <div>
+      <div class="badge" id="flashChapter">隨機抽卡</div>
+      <div class="flash-q" id="flashQuestion">按「抽一題」開始。</div>
+      <p class="muted" id="flashHint">建議先自己講出：3 個具體藥名＋值班第一步。</p>
+      <div id="flashAnswer" class="flash-answer">
+        <div class="callout"><strong>一句話重點</strong><span id="flashPearl"></span></div>
+        <div class="callout red"><strong>值班警訊 / first move</strong><span id="flashWarning"></span></div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="drawFlash">抽一題</button>
+      <button class="btn secondary" id="revealFlash">看答案</button>
+      <button class="btn secondary" id="drawWeak">只抽模糊＋不會</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz" class="section">
+  <div class="quiz-wrap">
+    <div class="panel" id="quizSetup">
+      <h2>值班情境 Challenge</h2>
+      <p>從 30 個 case 隨機抽題。答完立即看解析；一題只計第一次作答。</p>
+      <div class="actions">
+        <label>題數
+          <select id="quizCount" class="select">
+            <option value="10">10 題</option><option value="20">20 題</option><option value="30">30 題</option>
+          </select>
+        </label>
+        <button class="btn" id="startQuiz">開始</button>
+      </div>
+    </div>
+    <div class="panel" id="quizPlay" hidden>
+      <div class="quiz-top">
+        <span class="badge" id="quizTag">Case</span>
+        <strong id="quizCounter">1 / 10</strong>
+      </div>
+      <div class="progress"><div id="quizProgress"></div></div>
+      <div class="quiz-stem" id="quizStem"></div>
+      <div id="quizOptions"></div>
+      <div id="quizFeedback" class="feedback" aria-live="polite"></div>
+      <div class="actions" style="margin-top:12px">
+        <button class="btn" id="nextQuiz" disabled>下一題</button>
+        <button class="btn secondary" id="quitQuiz">結束本次</button>
+      </div>
+    </div>
+    <div class="panel" id="quizResult" hidden>
+      <h2>本次結果</h2>
+      <div class="grid-stats">
+        <div class="stat"><b id="resultScore">0%</b><span>正確率</span></div>
+        <div class="stat"><b id="resultCorrect">0</b><span>答對</span></div>
+        <div class="stat"><b id="resultWrong">0</b><span>答錯</span></div>
+        <div class="stat"><b id="resultGrade">—</b><span>評語</span></div>
+      </div>
+      <div class="actions"><button class="btn" id="retryQuiz">再跑一輪</button><button class="btn secondary" id="reviewWrong">只看本次錯題</button></div>
+      <div id="wrongReview" class="cards" style="margin-top:14px"></div>
+    </div>
+  </div>
+</section>
+
+<section id="antidote" class="section">
+  <div class="panel">
+    <h2>Antidote 值班速查</h2>
+    <input id="antidoteSearch" class="input" type="search" placeholder="搜尋：TCA、Warfarin、Digoxin…">
+    <div class="table-wrap" style="margin-top:12px">
+      <table><thead><tr><th>中毒 / 藥物</th><th>Antidote / reversal</th><th>教材提醒</th></tr></thead><tbody id="antidoteBody"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<section id="safety" class="section">
+  <div class="panel">
+    <h2>開藥前 30 秒自我檢查</h2>
+    <p class="muted">把「先翻一次藥單」變成固定 reflex。</p>
+    <div class="check6">
+      <label class="checkitem"><input type="checkbox" class="safetyBox"><span><strong>1. eGFR / CrCl？</strong><br><small>會不會需要 renal adjustment？有沒有 nephrotoxic stacking？</small></span></label>
+      <label class="checkitem"><input type="checkbox" class="safetyBox"><span><strong>2. Liver function？</strong><br><small>肝硬化、DILI、會不會蓄積或需要改藥？</small></span></label>
+      <label class="checkitem"><input type="checkbox" class="safetyBox"><span><strong>3. 副作用會不會疊加？</strong><br><small>QTc、sedation、anticholinergic、bleeding、renal toxicity。</small></span></label>
+      <label class="checkitem"><input type="checkbox" class="safetyBox"><span><strong>4. Allergy 到底是什麼反應？</strong><br><small>不要只看「過敏」兩個字；確認實際症狀與時序。</small></span></label>
+      <label class="checkitem"><input type="checkbox" class="safetyBox"><span><strong>5. 可能懷孕？LMP？</strong><br><small>必要時驗孕；看孕週與不治療本身的風險。</small></span></label>
+      <label class="checkitem"><input type="checkbox" class="safetyBox"><span><strong>6. 怎麼泡 / 打多久 / 要避光？</strong><br><small>不熟就直接查院內藥劑資料或問藥師。</small></span></label>
+    </div>
+    <div class="callout blue" id="safetyStatus"><strong>0 / 6</strong>還沒跑完安全檢查。</div>
+    <div class="actions"><button class="btn secondary" id="clearSafety">重新檢查</button></div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <strong>來源與署名：</strong>原始教材為「PGY職前加油站｜Day 6 藥物副作用五十題暨詳解」，黃品叡醫師。此頁為依使用者提供教材製作的個人互動學習版，非原作者官方版本。若要公開散布、上架或商業使用，請先確認原教材授權。<br>
+  <strong>Clinical note：</strong>本頁不是處方系統或 clinical decision support；實際劑量、稀釋、相容性、孕期風險與 reversal 請依當時仿單、院內規範與藥師建議確認。
+</footer>
+</div>
+<div id="toast" class="toast" role="status"></div>
+
+<script>
+const CARDS=[{"num": 1, "title": "常見腎毒性藥物", "chapter": "三大器官毒性", "pearl": "先看 eGFR/Cr；腎毒性最怕疊加，特別是 NSAID＋ACEI/ARB＋利尿劑。", "warning": "腎功能差時，Cefepime/Carbapenem 等多數抗生素需查腎功能調整；Acyclovir IV 要充分水化、慢速輸注。"}, {"num": 2, "title": "常見肝毒性藥物", "chapter": "三大器官毒性", "pearl": "DILI 先分 hepatocellular / cholestatic / mixed；用 R value 幫忙分類。", "warning": "先畫藥物時間軸，再排除病毒、酒精、缺血、膽道阻塞與鬱血。"}, {"num": 3, "title": "常見耳毒性藥物", "chapter": "三大器官毒性", "pearl": "Aminoglycoside、Cisplatin、Loop diuretic、Salicylate/Quinine 是常見耳毒性藥。", "warning": "避免耳毒性藥物疊加；腎功能差風險更高。"}, {"num": 4, "title": "造成腹瀉的藥物", "chapter": "腸胃道與呼吸道", "pearl": "先排除 C. difficile 與糞便嵌塞造成的 overflow diarrhea，再談止瀉。", "warning": "有發燒、血便、腹脹、WBC 高或近期抗生素時，不要先給 Loperamide。"}, {"num": 5, "title": "造成便秘的藥物", "chapter": "腸胃道與呼吸道", "pearl": "Opioid 開始時就要同步想 bowel regimen，因為便秘不會自行產生耐受。", "warning": "腹脹、嘔吐、無排氣或新腹痛先排除 bowel obstruction。"}, {"num": 6, "title": "造成乾咳的藥物", "chapter": "腸胃道與呼吸道", "pearl": "新發持續乾咳，最經典藥物是 ACEI。", "warning": "咳嗽＋喘＋低氧時，先排除肺水腫、肺炎、PE、吸入等。"}, {"num": 7, "title": "造成凝血異常的藥物", "chapter": "血液學", "pearl": "PT/INR、aPTT 異常時，先分清楚抗凝藥效應 vs 肝病/營養/DIC。", "warning": "Warfarin 重大出血要想到 Vitamin K＋4F-PCC；Heparin 可用 Protamine。"}, {"num": 8, "title": "造成血小板低下的藥物", "chapter": "血液學", "pearl": "HIT 的重點是 platelet 下降合併 thrombotic risk；用 4T score 評估。", "warning": "疑似 HIT 立刻停所有 Heparin/LMWH，改 non-heparin anticoagulant；不可預防性輸 platelet。"}, {"num": 9, "title": "造成癲癇發作的藥物", "chapter": "全身性副作用", "pearl": "Carbapenem、Cefepime 在腎功能差且未減量時是重要藥物性 seizure 來源。", "warning": "Valproate＋Carbapenem 會讓 VPA 濃度快速下降，盡量避免併用。"}, {"num": 10, "title": "造成呼吸過緩的藥物", "chapter": "全身性副作用", "pearl": "吸氧時 SpO₂ 正常不代表沒有 respiratory depression；RR 與意識更早出現警訊。", "warning": "Opioid＋BZD 風險疊加；Naloxone 目標是恢復呼吸，不是把人完全叫醒。"}, {"num": 11, "title": "造成骨髓抑制的藥物", "chapter": "全身性副作用", "pearl": "Febrile neutropenia 是內科急症，重點是快速取得 cultures 並在一小時內給適當廣效抗生素。", "warning": "看 ANC，不只看 WBC；抗甲狀腺藥、Linezolid 等都可能造成明顯骨髓抑制。"}, {"num": 12, "title": "造成頭暈的藥物", "chapter": "全身性副作用", "pearl": "先分 vertigo、presyncope、disequilibrium；藥物性最常見的是姿勢性低血壓型。", "warning": "床邊先量 orthostatic BP、驗 glucose，再看近期藥物變動。"}, {"num": 13, "title": "造成噁心嘔吐的藥物", "chapter": "全身性副作用", "pearl": "止吐藥要看病人：Metoclopramide 可能 EPS；Ondansetron 可能 QTc 延長。", "warning": "新發嘔吐先排除 obstruction、ICP、inferior MI、DKA、高 Ca。"}, {"num": 14, "title": "容易引發嗜睡的藥物", "chapter": "全身性副作用", "pearl": "BZD、Z-drug、第一代 antihistamine、opioid、antiepileptic 都常見。", "warning": "住院病人嗜睡先排除低糖、缺氧/CO₂ retention、感染、電解質與腦部事件。"}, {"num": 15, "title": "易引發 EPS 的藥物", "chapter": "全身性副作用", "pearl": "Metoclopramide、Prochlorperazine、典型 antipsychotic 常見 EPS。", "warning": "高燒＋rigidity＋意識改變＋autonomic instability＋CPK 高要想 NMS，不是單純 EPS。"}, {"num": 16, "title": "造成 QTc 延長的藥物", "chapter": "全身性副作用", "pearl": "QTc >500 ms 或較 baseline 增加 >60 ms 屬高風險，要停致病藥並矯正電解質。", "warning": "TdP：MgSO₄ 2 g、補 K、停 QT 藥；不穩定時 defibrillation。"}, {"num": 17, "title": "造成藥物性帕金森的藥物", "chapter": "全身性副作用", "pearl": "Haloperidol、Risperidone、Sulpiride、Metoclopramide、Flunarizine 等都可能造成 drug-induced parkinsonism。", "warning": "藥物性常對稱、亞急性出現；首選停藥或換藥。"}, {"num": 18, "title": "造成心搏過快的藥物", "chapter": "心血管與代謝", "pearl": "β-agonist、Theophylline、catecholamine、anticholinergic、Pseudoephedrine 都會造成 tachycardia。", "warning": "先做 12-lead ECG，並排除 fever、pain、bleeding、hypoxia、PE、withdrawal。"}, {"num": 19, "title": "造成心搏過緩的藥物", "chapter": "心血管與代謝", "pearl": "β-blocker、non-DHP CCB、Amiodarone、Digoxin、Dexmedetomidine 都可能造成 bradycardia。", "warning": "不要漏掉 Timolol eye drops；有症狀依 bradycardia algorithm 處理。"}, {"num": 20, "title": "易造成低血壓的藥物", "chapter": "心血管與代謝", "pearl": "降壓藥、α-blocker、nitrate、sedative、快速 IV Amiodarone/Vancomycin 都可能壓低 BP。", "warning": "先確認是真的 hypotension，再排除 hemorrhagic/septic/cardiogenic/obstructive/anaphylactic shock。"}, {"num": 21, "title": "易造成高血壓的藥物", "chapter": "心血管與代謝", "pearl": "Vasopressor、steroid、NSAID、calcineurin inhibitor、EPO、SNRI 等都可能升壓。", "warning": "先處理 pain、urinary retention、anxiety、insomnia；分 urgency vs emergency。"}, {"num": 22, "title": "易造成低血糖的藥物", "chapter": "心血管與代謝", "pearl": "Sulfonylurea 與 insulin 是高風險；SU 低血糖可能反覆。", "warning": "SU 低血糖需長時間觀察；NPO 時要主動調整 insulin/SU。"}, {"num": 23, "title": "易造成高血糖的藥物", "chapter": "心血管與代謝", "pearl": "Steroid hyperglycemia 常在午后到晚間變明顯，fasting glucose 可能低估。", "warning": "看 steroid、含糖點滴/TPN、感染；監測時段要抓到下午高峰。"}, {"num": 24, "title": "易造成酸血症的藥物", "chapter": "心血管與代謝", "pearl": "Metabolic acidosis 先算 anion gap；藥物相關可見 Metformin、SGLT2i、Salicylate、Propylene glycol 等。", "warning": "大量 N/S 會造成 hyperchloremic acidosis；MALA 高風險見 AKI、shock、sepsis、hypoxia。"}, {"num": 25, "title": "常見造成臉潮紅的藥物", "chapter": "心血管與代謝", "pearl": "Vancomycin flushing syndrome 不是典型 IgE allergy，常與 infusion rate 太快有關。", "warning": "暫停/減慢輸注＋antihistamine；若有 airway compromise 或顯著 hypotension，要改按 anaphylaxis 處理。"}, {"num": 26, "title": "常見造成紅疹的藥物", "chapter": "皮膚、肌肉與其他", "pearl": "看到藥疹先判斷是不是 SCAR，而不是先猜是哪支藥。", "warning": "黏膜侵犯、水泡、皮膚痛、臉部水腫、器官損傷等要立刻停可疑藥並會診。"}, {"num": 27, "title": "造成 Myopathy 的藥物", "chapter": "皮膚、肌肉與其他", "pearl": "Statin、Daptomycin、steroid、Colchicine 等可引起 myopathy。", "warning": "Statin＋Gemfibrozil/Macrolide/Azole/Amiodarone/Cyclosporine 等會增加風險。"}, {"num": 28, "title": "易造成躁動的藥物", "chapter": "皮膚、肌肉與其他", "pearl": "老人 delirium 先找 reversible causes；anticholinergic、steroid、Cefepime、withdrawal 都可能引發。", "warning": "一般 delirium 避免反射性給 BZD；酒精/BZD withdrawal 例外。"}, {"num": 29, "title": "易造成心悸的藥物", "chapter": "皮膚、肌肉與其他", "pearl": "β-agonist、Theophylline、caffeine、Levothyroxine、Pseudoephedrine 等常見。", "warning": "第一步仍是 12-lead ECG，先確認 rhythm 與 hemodynamic stability。"}, {"num": 30, "title": "易減少口水分泌的藥物", "chapter": "皮膚、肌肉與其他", "pearl": "Anticholinergic、第一代 antihistamine、TCA、antipsychotic、SSRI/SNRI 都可能造成 dry mouth。", "warning": "口乾會增加 aspiration、candidiasis、caries 風險；先減少 anticholinergic burden。"}, {"num": 31, "title": "造成口黏膜出血的藥物", "chapter": "皮膚、肌肉與其他", "pearl": "口腔出血常是 mucositis 加上 thrombocytopenia/coagulopathy 疊加。", "warning": "抽 CBC、PT/aPTT，局部加壓/冰敷/TXA mouthwash，再評估 platelet/anticoagulant。"}, {"num": 32, "title": "如何預防顯影劑相關 AKI", "chapter": "特殊病史與預防", "pearl": "核心措施是適當 IV hydration；現代多用 CA-AKI 而非把所有 AKI 都歸因於 contrast。", "warning": "高風險者評估 eGFR/AKI、volume status、其他 nephrotoxin；NAC 不是核心措施。"}, {"num": 33, "title": "氣喘病史的禁忌用藥", "chapter": "特殊病史與預防", "pearl": "Non-selective β-blocker 與 NSAID 是重點；Timolol 眼藥水也會全身吸收。", "warning": "有鼻息肉/慢性鼻竇炎時要想到 AERD；開 NSAID 前問過去是否會喘。"}, {"num": 34, "title": "青光眼病史禁忌用藥", "chapter": "特殊病史與預防", "pearl": "藥物禁忌重點主要在 angle-closure glaucoma；anticholinergic/sympathomimetic 可能誘發急性發作。", "warning": "眼痛＋blurred vision＋halo＋N/V＋fixed mid-dilated pupil 是眼科急症。"}, {"num": 35, "title": "Acetaminophen 過量解毒劑", "chapter": "中毒與解毒劑", "pearl": "N-acetylcysteine（NAC）；愈早給越好，單次急性攝入可用 Rumack-Matthew nomogram 判讀。", "warning": "4 小時前濃度不能用 nomogram；延誤高風險時不必等所有資料齊全才開始 NAC。"}, {"num": 36, "title": "BZD 過量解毒劑", "chapter": "中毒與解毒劑", "pearl": "Flumazenil 是 reversal agent，但多數 BZD overdose 以 supportive airway/ventilation 為主。", "warning": "長期 BZD、TCA co-ingestion、seizure history 或不明混合中毒時，Flumazenil 可能誘發 seizure。"}, {"num": 37, "title": "Opioid 過量解毒劑", "chapter": "中毒與解毒劑", "pearl": "Naloxone；目標是恢復 adequate ventilation。", "warning": "慢性 opioid 使用者要低劑量 titration；Naloxone 半衰期較短，須防 re-sedation。"}, {"num": 38, "title": "NOAC 過量解毒劑", "chapter": "中毒與解毒劑", "pearl": "Dabigatran：Idarucizumab；Xa inhibitor：Andexanet alfa 或 4F-PCC（視可近性）。", "warning": "先記最後服藥時間與 renal function；常規 INR 不能排除 NOAC effect。"}, {"num": 39, "title": "Warfarin 過量解毒劑", "chapter": "中毒與解毒劑", "pearl": "重大/致命出血需要 Vitamin K＋4F-PCC（無 PCC 時 FFP）。", "warning": "只有 INR 高但無出血，處置與 active bleeding 完全不同。"}, {"num": 40, "title": "TCA 過量解毒劑", "chapter": "中毒與解毒劑", "pearl": "Sodium bicarbonate；QRS >100 ms、ventricular arrhythmia 或 hypotension 是重要給藥指標。", "warning": "禁用會加重 sodium-channel blockade 的 Class Ia/Ic；不要用 Flumazenil。"}, {"num": 41, "title": "酒精過量的解毒劑", "chapter": "中毒與解毒劑", "pearl": "Ethanol 本身沒有 antidote；支持性照護、先驗 glucose。Methanol/ethylene glycol 則可用 Fomepizole＋dialysis。", "warning": "Thiamine 在 glucose 前或同時給；別把 altered mental status 只當醉酒。"}, {"num": 42, "title": "味道不佳的藥物", "chapter": "給藥實務", "pearl": "NAC、KCl/K-Glu、Kalimate、Metronidazole、Clarithromycin、鐵劑、Lactulose 等口感差。", "warning": "冰鎮、吸管、詢問替代劑型可改善 adherence；配果汁要注意 grapefruit interactions。"}, {"num": 43, "title": "不能磨粉管灌的藥物", "chapter": "給藥實務", "pearl": "四大禁磨：ER/SR/CR 等緩釋、enteric-coated、sublingual/buccal、cytotoxic/teratogenic。", "warning": "管灌藥要分開給並沖管；Phenytoin 等與 tube feeding 交互作用要特別處理。"}, {"num": 44, "title": "大量點滴泡製藥物", "chapter": "給藥實務", "pearl": "Baktar IV、Amphotericin B、Acyclovir、Vancomycin、Phenytoin 等都有特定稀釋與輸注要求。", "warning": "HF/HD/ascites 病人要把『藥的水量』算進 I/O，也要避免長輸注時間互相卡 line。"}, {"num": 45, "title": "併用後易結晶/不相容藥物", "chapter": "給藥實務", "pearl": "同一 line 前先查 compatibility；Ceftriaxone＋Ca、NaHCO₃＋Ca、Phenytoin＋D5W 等是經典雷。", "warning": "不確定就分 lumen 或中間 flush；出現混濁、沉澱、變色立即停。"}, {"num": 46, "title": "特殊保存方式藥物", "chapter": "給藥實務", "pearl": "冷藏、避光、現配現用是三大重點；Nitroprusside、Amphotericin B、Vit K 等需避光。", "warning": "Insulin/biologic/vaccine 不可冷凍；NTG SL 要依原廠容器與效期保存。"}, {"num": 47, "title": "抗生素劑量調整方式", "chapter": "給藥實務", "pearl": "腎功能調整通常改 maintenance dose，不要把 loading dose 減掉。", "warning": "多數仿單用 CrCl；CRRT、HD、obesity、sepsis 都要用各自 dosing logic。"}, {"num": 48, "title": "藥物過敏流程", "chapter": "給藥實務", "pearl": "處理分三層：當下急救 → EMR/病歷註記 → ADR 通報與後續。", "warning": "Anaphylaxis 第一線是 IM adrenaline；antihistamine/steroid 不能取代。"}, {"num": 49, "title": "懷孕可使用的一般藥物", "chapter": "孕期用藥", "pearl": "第一步不是背分級，而是先問 LMP/是否可能懷孕；FDA 已改用 PLLR 敘述式標示。", "warning": "常用症狀藥需看孕週與風險；ACEI/ARB、Warfarin、Isotretinoin、Methotrexate 等為重要避免項目。"}, {"num": 50, "title": "懷孕可使用的抗生素", "chapter": "孕期用藥", "pearl": "Penicillin 與 Cephalosporin 家族相對安全；要避免 Tetracycline、Fluoroquinolone、Aminoglycoside 等。", "warning": "孕婦 UTI/ASB 要治療；Nitrofurantoin、TMP-SMX 等要看孕週與個別風險。"}];
+const SCENARIOS=[{"tag": "Renal", "stem": "78 歲病人脫水、Cr 上升，原本使用 ARB＋利尿劑，值班想加 Ketorolac 止痛。最該先想到什麼？", "options": ["直接給 Ketorolac，因為止痛優先", "先評估腎灌流與 nephrotoxic stacking，考慮其他止痛", "只要尿量正常就可放心給", "先把 ARB 加量以保護腎臟"], "answer": 1, "explain": "教材強調 NSAID＋ACEI/ARB＋利尿劑的 nephrotoxic stacking；脫水、低血壓會進一步增加風險。"}, {"tag": "GI", "stem": "住院病人使用 Clindamycin 後出現大量水瀉、發燒與腹脹。第一步最不適合的是？", "options": ["評估 C. difficile", "檢查近期抗生素與腹部狀況", "立刻給 Loperamide 止瀉", "評估 WBC 與感染嚴重度"], "answer": 2, "explain": "有感染紅旗時先排除 C. difficile；直接抑制腸蠕動可能掩蓋或惡化病情。"}, {"tag": "HIT", "stem": "病人使用 UFH 第 7 天，platelet 從 220k 掉到 95k，且新出現 DVT。最適當的下一步？", "options": ["輸 platelet", "停所有 heparin 並改用 non-heparin anticoagulant", "直接改 Warfarin", "只追 CBC，等 platelet <20k 再處理"], "answer": 1, "explain": "這是典型 HIT 情境：platelet 下降 >50%＋時序吻合＋新血栓。先停所有 heparin/LMWH，改其他抗凝。"}, {"tag": "Neuro", "stem": "腎功能惡化的病人使用 Cefepime 後開始意識混亂並抽搐。最重要的藥物面思考？", "options": ["Cefepime neurotoxicity / seizure risk 是否因腎功能未調整", "一定是原發癲癇", "先加大 Cefepime 劑量", "只需補鈣"], "answer": 0, "explain": "教材特別提醒 Cefepime、Carbapenem 在腎功能不良未調整時可引發神經毒性與 seizure。"}, {"tag": "Resp", "stem": "使用 Morphine＋Midazolam 的病人吸氧下 SpO₂ 98%，但 RR 7/min、叫不太醒。最合理判斷？", "options": ["SpO₂ 正常，沒有 respiratory depression", "先關掉監視器避免 alarm", "高度懷疑呼吸抑制，先處理 airway/ventilation 並評估 reversal", "只要血壓正常就觀察"], "answer": 2, "explain": "吸氧會讓 SpO₂ 延後下降；RR 與 consciousness 是較早警訊。"}, {"tag": "ID", "stem": "化療後病人 T 38.5°C、ANC 280/µL。值班重點是？", "options": ["等明天主治查房再決定", "只給退燒藥", "迅速抽 cultures 並在 1 小時內給 antipseudomonal broad-spectrum antibiotics", "先做肛診找感染源"], "answer": 2, "explain": "符合 febrile neutropenia；重點是不要延誤 first dose antibiotics，且避免肛診/肛溫。"}, {"tag": "EPS", "stem": "24 歲女性打 Metoclopramide 後突然斜頸、眼球上吊。最符合？", "options": ["Acute dystonia", "Tardive dyskinesia", "NMS", "Serotonin syndrome"], "answer": 0, "explain": "急性 dystonia 可在數小時到數天出現；教材列 Diphenhydramine 或 Biperiden 為常用處置。"}, {"tag": "QT", "stem": "病人 QTc 530 ms，K 3.0、Mg 1.5，且正在使用 Amiodarone＋Ondansetron。最該做的是？", "options": ["再加 Haloperidol", "停可延長 QT 的藥並矯正 K/Mg", "只重抽一次 EKG 不處理", "加 Metoclopramide 一定比較安全"], "answer": 1, "explain": "QTc >500 ms 是高風險；優先 review QT-prolonging drugs 與修正電解質。"}, {"tag": "CV", "stem": "住院病人 HR 42/min，藥單沒有口服 β-blocker，但有青光眼眼藥水。哪個最容易被漏掉？", "options": ["Latanoprost", "Artificial tears", "Timolol eye drops", "Antibiotic eye drops"], "answer": 2, "explain": "Timolol 眼藥水可全身吸收並造成 bradycardia/bronchospasm。"}, {"tag": "Hypoglycemia", "stem": "高齡糖尿病病人因 Glimepiride 低血糖，D50W 後 glucose 回到 130 mg/dL。接下來最重要？", "options": ["立刻出院", "考慮持續監測，因 SU 低血糖可能反覆", "再補一針長效 insulin", "停止所有 glucose monitoring"], "answer": 1, "explain": "Sulfonylurea 作用久且在腎功能差時更可能蓄積，單次矯正後可能 recurrence。"}, {"tag": "Hyperglycemia", "stem": "早上使用 Prednisolone 的病人 fasting glucose 130，但下午與晚餐前常 >300。最符合？", "options": ["典型 steroid hyperglycemia pattern", "一定是 DKA", "代表 steroid 不會影響血糖", "只需看 fasting glucose"], "answer": 0, "explain": "教材指出 Prednisolone 後血糖常在午後到晚間升高，只看 fasting 會低估。"}, {"tag": "Acid-base", "stem": "使用 SGLT2 inhibitor 的病人噁心、腹痛、AG metabolic acidosis，但 glucose 只有 180 mg/dL。最該想到？", "options": ["Euglycemic DKA", "純 respiratory alkalosis", "VFS", "HIT"], "answer": 0, "explain": "SGLT2 inhibitor 可造成 euglycemic DKA；高 AG acidosis 不能被不高的 glucose 排除。"}, {"tag": "Vanco", "stem": "Vancomycin 開始 15 分鐘後臉頸潮紅搔癢，無 wheeze、無 angioedema，BP 僅輕降。最符合？", "options": ["Vancomycin flushing syndrome", "一定是 IgE anaphylaxis", "SJS", "DRESS"], "answer": 0, "explain": "VFS 常與輸注過快造成 non-IgE histamine release 有關；通常可暫停/減速並給 antihistamine。"}, {"tag": "SCAR", "stem": "新藥後病人發燒、口腔潰瘍、水泡、皮膚疼痛。最重要的是？", "options": ["當成一般 urticaria 開抗組織胺就好", "立刻停可疑藥並依 SCAR 緊急處理/會診", "繼續藥物觀察 48 小時", "先磨粉改鼻胃管給藥"], "answer": 1, "explain": "Mucosal involvement、blister、skin pain 是 severe cutaneous adverse reaction red flags。"}, {"tag": "Myopathy", "stem": "病人長期使用 Simvastatin，新加 Clarithromycin 後出現肌痛、無力、茶色尿。最該檢查？", "options": ["CPK、K、renal function", "只驗 INR", "只驗 amylase", "只驗 troponin"], "answer": 0, "explain": "Statin interaction 可增加 myopathy/rhabdomyolysis；需看 CPK、高 K 與 AKI。"}, {"tag": "Delirium", "stem": "82 歲病人夜間躁動拔管，膀胱脹、疼痛、沒戴助聽器。第一策略？", "options": ["立刻大量 BZD", "先找並處理 reversible causes，優先 non-pharmacologic delirium care", "直接約束並關燈", "只加 Haloperidol 不評估原因"], "answer": 1, "explain": "教材強調老人 delirium 先處理尿滯留、痛、缺氧、環境與藥物等可逆因素，藥物是最後手段。"}, {"tag": "CA-AKI", "stem": "eGFR 25 的病人準備 contrast CT。哪個預防策略最有核心證據？", "options": ["適當 IV isotonic hydration", "只給 NAC 就足夠", "預防性血液透析", "完全不需要評估 volume status"], "answer": 0, "explain": "教材把 adequate IV hydration 列為核心；NAC 不能取代水化。"}, {"tag": "Asthma", "stem": "有 asthma＋nasal polyps 的病人表示以前吃某些止痛藥會喘。哪類藥最需要警覺？", "options": ["NSAID / Aspirin", "Acetaminophen 一定禁用", "PPI", "Lactulose"], "answer": 0, "explain": "這組病史符合 AERD 線索，NSAID/aspirin 可能誘發 bronchospasm。"}, {"tag": "Glaucoma", "stem": "病人有 angle-closure glaucoma，現在要開 anticholinergic。最應該怎麼想？", "options": ["與 glaucoma 無關", "可能誘發 acute angle closure，需謹慎/避免並確認眼科病史", "所有 open-angle glaucoma 都完全禁止所有藥物", "只要用 IV 就安全"], "answer": 1, "explain": "教材強調主要禁忌在 angle-closure 型；anticholinergic/sympathomimetic 可能誘發發作。"}, {"tag": "Tox", "stem": "Acetaminophen 急性過量且攝入時間明確。何時抽濃度用 Rumack-Matthew nomogram 判讀較合理？", "options": ["攝入後 30 分鐘", "攝入後至少 4 小時", "一定要等 24 小時", "完全不需要抽濃度"], "answer": 1, "explain": "4 小時前仍在吸收，太早的濃度不適合 nomogram 判讀。"}, {"tag": "Tox", "stem": "不明混合藥物 overdose，病人可能長期使用 BZD。關於 Flumazenil，哪個最合理？", "options": ["一定要立刻給", "可能誘發 seizure，通常先 supportive airway/ventilation", "只要 SpO₂ 正常就大量給", "它是 Opioid 解毒劑"], "answer": 1, "explain": "長期 BZD、TCA co-ingestion、seizure history 或未知混合中毒是 Flumazenil 高風險情境。"}, {"tag": "Tox", "stem": "長期 Morphine 使用者 RR 6/min、意識抑制。Naloxone 的主要目標？", "options": ["一次把病人完全叫醒", "恢復 adequate ventilation，低劑量逐步 titrate", "完全消除所有疼痛", "讓 pupil 恢復正常即可"], "answer": 1, "explain": "過度 reversal 會造成 acute withdrawal、劇痛與其他併發症。"}, {"tag": "NOAC", "stem": "Dabigatran 相關致命性出血需要特異性 reversal。教材列哪個？", "options": ["Idarucizumab", "Protamine", "Vitamin K", "Flumazenil"], "answer": 0, "explain": "Dabigatran 的 specific antidote 是 Idarucizumab；亦因蛋白結合低可考慮 dialysis。"}, {"tag": "Warfarin", "stem": "Warfarin 病人 intracranial bleeding，INR 5.8。哪個 reversal 組合最符合教材？", "options": ["只停 Warfarin", "Vitamin K＋4F-PCC", "只給 Folic acid", "Naloxone＋D5W"], "answer": 1, "explain": "重大/致命性出血時需要快速 factor replacement 加上 Vitamin K 維持後續 reversal。"}, {"tag": "TCA", "stem": "TCA overdose，QRS 128 ms、低血壓。首要 antidotal therapy？", "options": ["Sodium bicarbonate", "Flumazenil", "Atropine only", "N-acetylcysteine"], "answer": 0, "explain": "教材列 QRS >100 ms、ventricular arrhythmia、hypotension 為 bicarbonate 的重要指標。"}, {"tag": "Alcohol", "stem": "疑似單純 Ethanol intoxication。哪句正確？", "options": ["有專一 antidote Fomepizole", "沒有特異性 antidote，以 airway/supportive care 為主並先驗 glucose", "一定要給 Naloxone", "一定要洗胃"], "answer": 1, "explain": "Ethanol 本身沒有 antidote；要注意 hypoglycemia、hypothermia、trauma/co-ingestion。"}, {"tag": "NG", "stem": "哪一類藥物原則上不能直接磨粉？", "options": ["ER/SR/CR 等緩釋劑型", "一般立即釋放錠一律禁磨", "所有膠囊都一定不能打開", "所有 liquid 都要磨粉"], "answer": 0, "explain": "緩釋、腸溶、舌下/頰含、cytotoxic/teratogenic 是教材列出的四大禁磨類別。"}, {"tag": "IV", "stem": "Phenytoin IV 與哪種輸液配伍最容易造成沉澱？", "options": ["D5W", "N/S", "依教材兩者完全一樣", "Sterile water only"], "answer": 0, "explain": "教材列 Phenytoin 只能用 N/S，與 D5W 會結晶沉澱。"}, {"tag": "Allergy", "stem": "病人給藥後 wheeze、hypotension、urticaria。Anaphylaxis 第一線藥物？", "options": ["Diphenhydramine only", "Hydrocortisone only", "IM Adrenaline", "Furosemide"], "answer": 2, "explain": "教材強調 anaphylaxis 第一線是 IM Adrenaline；antihistamine/steroid 只能當輔助。"}, {"tag": "Pregnancy", "stem": "孕婦需要一般常用抗生素，哪一類在教材中被列為相對安全的第一線家族？", "options": ["Penicillin / Cephalosporin", "Tetracycline", "Fluoroquinolone", "Aminoglycoside"], "answer": 0, "explain": "教材把 Penicillin 與 Cephalosporin 家族列為孕期相對安全、使用經驗最充足的選擇。"}];
+const ANTIDOTES=[["Acetaminophen", "N-acetylcysteine (NAC)", "8 小時內效果最佳；急性單次攝入依 4 小時後濃度評估"], ["Benzodiazepine", "Flumazenil", "臨床多數以 supportive care 為主；高風險族群慎用"], ["Opioid", "Naloxone", "目標恢復呼吸；慢性使用者低劑量 titration"], ["Dabigatran", "Idarucizumab", "教材列 5 g IV；亦可考慮 dialysis"], ["Xa inhibitor", "Andexanet alfa / 4F-PCC", "視藥物與可近性；高蛋白結合不可透析"], ["Warfarin", "Vitamin K + 4F-PCC", "重大出血時併用；無 PCC 可 FFP"], ["TCA", "Sodium bicarbonate", "QRS >100 ms / arrhythmia / hypotension"], ["Methanol / Ethylene glycol", "Fomepizole ± dialysis", "高 AG + 高 osmolar gap"], ["β-blocker", "Glucagon + high-dose insulin/glucose", "另依情境評估 calcium 等"], ["Calcium channel blocker", "Calcium + high-dose insulin/glucose", "refractory case 可考慮 lipid emulsion"], ["Digoxin", "Digoxin-specific Fab", "依臨床/濃度/arrhythmia/hyperK 評估"], ["Heparin", "Protamine sulfate", "HIT 是停 heparin + non-heparin anticoagulant，不是單純 reversal"], ["Isoniazid", "Pyridoxine (B6)", "overdose 常見 seizure + lactic acidosis"], ["Organophosphate", "Atropine + Pralidoxime", "Atropine 以分泌物改善為重要 endpoint"], ["Methemoglobinemia", "Methylene blue", "典型線索：SpO₂ 約 85% plateau、巧克力色血"]];
+
+const storeKey="drugAETrainer_v1";
+let state={ratings:{},quizHistory:[],lastQuiz:null};
+try{const s=localStorage.getItem(storeKey); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+function save(){try{localStorage.setItem(storeKey,JSON.stringify(state));}catch(e){}}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1600)}
+function setTab(id){
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
+  document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
+document.getElementById("goChecklist").addEventListener("click",()=>setTab("checklist"));
+
+function ratingCounts(){
+  let know=0,fuzzy=0,no=0;
+  Object.values(state.ratings).forEach(v=>{if(v==="know")know++;else if(v==="fuzzy")fuzzy++;else if(v==="no")no++;});
+  return {know,fuzzy,no,total:know+fuzzy+no};
+}
+function updateStats(){
+  const c=ratingCounts();
+  statKnown.textContent=c.know;statFuzzy.textContent=c.fuzzy;statUnknown.textContent=c.no;
+  statQuiz.textContent=state.lastQuiz?state.lastQuiz.score+"%":"—";
+  const pct=Math.round(c.total/50*100);
+  homeProgress.style.width=pct+"%";
+  homeProgressText.textContent=`已完成 ${c.total} / 50 題自評（${pct}%）。`;
+  checkProgress.style.width=pct+"%";
+  checkProgressText.textContent=`已評 ${c.total} / 50｜會 ${c.know}｜模糊 ${c.fuzzy}｜不會 ${c.no}`;
+}
+const chapterFilter=document.getElementById("chapterFilter");
+[...new Set(CARDS.map(x=>x.chapter))].forEach(ch=>{const o=document.createElement("option");o.value=ch;o.textContent=ch;chapterFilter.appendChild(o);});
+function renderKnowledge(){
+  const q=document.getElementById("search").value.trim().toLowerCase();
+  const ch=chapterFilter.value, rf=ratingFilter.value;
+  const list=document.getElementById("knowledgeList");list.innerHTML="";
+  CARDS.filter(x=>{
+    const r=state.ratings[x.num]||"unrated";
+    const text=(x.title+" "+x.chapter+" "+x.pearl+" "+x.warning).toLowerCase();
+    return (!q||text.includes(q))&&(!ch||x.chapter===ch)&&(!rf||r===rf);
+  }).forEach(x=>{
+    const r=state.ratings[x.num]||"";
+    const el=document.createElement("article");el.className="knowledge";
+    el.innerHTML=`<div class="khead"><div class="num">${String(x.num).padStart(2,"0")}</div><div class="kmeta"><h3>${escapeHtml(x.title)}</h3><small>${escapeHtml(x.chapter)}</small><div class="rate">
+      <button data-r="know" class="${r==="know"?"sel know":""}">✓ 會</button>
+      <button data-r="fuzzy" class="${r==="fuzzy"?"sel fuzzy":""}">△ 模糊</button>
+      <button data-r="no" class="${r==="no"?"sel no":""}">✕ 不會</button>
+    </div></div></div>
+    <div class="details"><details><summary>展開重點</summary>
+      <div class="callout"><strong>一句話重點</strong>${escapeHtml(x.pearl)}</div>
+      <div class="callout red"><strong>值班 first move / 警訊</strong>${escapeHtml(x.warning)}</div>
+    </details></div>`;
+    el.querySelectorAll(".rate button").forEach(btn=>btn.addEventListener("click",()=>{
+      const val=btn.dataset.r;
+      state.ratings[x.num]=val;save();updateStats();renderKnowledge();
+    }));
+    list.appendChild(el);
+  });
+  if(!list.children.length) list.innerHTML='<div class="panel muted">沒有符合篩選條件的題目。</div>';
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+search.addEventListener("input",renderKnowledge);chapterFilter.addEventListener("change",renderKnowledge);ratingFilter.addEventListener("change",renderKnowledge);
+
+let currentFlash=null;
+function drawFlash(weak=false){
+  let pool=CARDS;
+  if(weak){const weakNums=CARDS.filter(x=>["fuzzy","no"].includes(state.ratings[x.num])).map(x=>x.num);pool=CARDS.filter(x=>weakNums.includes(x.num));if(!pool.length){toast("目前沒有標成「模糊／不會」的題目");return;}}
+  currentFlash=pool[Math.floor(Math.random()*pool.length)];
+  flashChapter.textContent=`Q${String(currentFlash.num).padStart(2,"0")} · ${currentFlash.chapter}`;
+  flashQuestion.textContent=currentFlash.title;
+  flashPearl.textContent=currentFlash.pearl;
+  flashWarning.textContent=currentFlash.warning;
+  flashAnswer.classList.remove("show");
+}
+drawFlash.addEventListener("click",()=>drawFlash(false));
+drawWeak.addEventListener("click",()=>drawFlash(true));
+revealFlash.addEventListener("click",()=>{if(!currentFlash)drawFlash(false);flashAnswer.classList.add("show")});
+
+let quiz={questions:[],idx:0,correct:0,answers:[],locked:false};
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+startQuiz.addEventListener("click",()=>startQuizRun());
+retryQuiz.addEventListener("click",()=>{quizResult.hidden=true;quizSetup.hidden=false;wrongReview.innerHTML=""});
+quitQuiz.addEventListener("click",()=>finishQuiz(true));
+function startQuizRun(){
+  const n=Math.max(1,Math.min(30,Number(quizCount.value)||10));
+  quiz={questions:shuffle(SCENARIOS).slice(0,n),idx:0,correct:0,answers:[],locked:false};
+  quizSetup.hidden=true;quizResult.hidden=true;quizPlay.hidden=false;wrongReview.innerHTML="";renderQuiz();
+}
+function renderQuiz(){
+  const q=quiz.questions[quiz.idx]; if(!q) return finishQuiz(false);
+  quiz.locked=false;nextQuiz.disabled=true;
+  quizTag.textContent=q.tag;quizCounter.textContent=`${quiz.idx+1} / ${quiz.questions.length}`;
+  quizProgress.style.width=Math.round((quiz.idx)/quiz.questions.length*100)+"%";
+  quizStem.textContent=q.stem;quizFeedback.className="feedback";quizFeedback.textContent="";
+  quizOptions.innerHTML="";
+  q.options.forEach((op,i)=>{
+    const b=document.createElement("button");b.className="option";b.textContent=String.fromCharCode(65+i)+". "+op;
+    b.addEventListener("click",()=>answerQuiz(i,b));quizOptions.appendChild(b);
+  });
+}
+function answerQuiz(i,clicked){
+  if(quiz.locked)return;quiz.locked=true;
+  const q=quiz.questions[quiz.idx], ok=i===q.answer;if(ok)quiz.correct++;
+  quiz.answers.push({tag:q.tag,stem:q.stem,selected:i,correct:q.answer,ok,explain:q.explain,options:q.options});
+  [...quizOptions.children].forEach((b,j)=>{b.classList.add("lock");if(j===q.answer)b.classList.add("correct");if(j===i&&!ok)b.classList.add("wrong")});
+  quizFeedback.className="feedback show "+(ok?"good":"bad");
+  quizFeedback.innerHTML=`<strong>${ok?"答對":"答錯"}</strong><br>${escapeHtml(q.explain)}`;
+  nextQuiz.disabled=false;
+}
+nextQuiz.addEventListener("click",()=>{quiz.idx++;if(quiz.idx>=quiz.questions.length)finishQuiz(false);else renderQuiz();});
+function finishQuiz(aborted=false){
+  if(!quiz.questions.length)return;
+  const answered=quiz.answers.length;
+  const score=answered?Math.round(quiz.correct/answered*100):0;
+  state.lastQuiz={date:new Date().toISOString(),score,correct:quiz.correct,total:answered,aborted};
+  state.quizHistory.push(state.lastQuiz);if(state.quizHistory.length>30)state.quizHistory.shift();save();updateStats();
+  quizPlay.hidden=true;quizSetup.hidden=true;quizResult.hidden=false;
+  resultScore.textContent=score+"%";resultCorrect.textContent=quiz.correct;resultWrong.textContent=Math.max(0,answered-quiz.correct);
+  resultGrade.textContent=score>=90?"穩":score>=75?"可上線":score>=60?"再補洞":"回 50 題";
+  quizProgress.style.width="100%";
+  renderWrongReview();
+}
+function renderWrongReview(){
+  const wrong=quiz.answers.filter(a=>!a.ok);wrongReview.innerHTML="";
+  if(!wrong.length){wrongReview.innerHTML='<div class="callout green"><strong>這輪全對。</strong>可以換一輪題目再壓一次。</div>';return;}
+  wrong.forEach((a,i)=>{
+    const d=document.createElement("div");d.className="knowledge";d.innerHTML=`<div class="khead"><div class="num">${i+1}</div><div class="kmeta"><h3>${escapeHtml(a.stem)}</h3><small>${escapeHtml(a.tag)}</small></div></div>
+    <div class="details"><div class="callout red"><strong>你的答案</strong>${escapeHtml(a.options[a.selected])}</div><div class="callout green"><strong>正解</strong>${escapeHtml(a.options[a.correct])}</div><p>${escapeHtml(a.explain)}</p></div>`;wrongReview.appendChild(d);
+  });
+}
+reviewWrong.addEventListener("click",()=>{wrongReview.scrollIntoView({behavior:"smooth"})});
+
+function renderAntidotes(){
+  const q=antidoteSearch.value.trim().toLowerCase();antidoteBody.innerHTML="";
+  ANTIDOTES.filter(r=>r.join(" ").toLowerCase().includes(q)).forEach(r=>{
+    const tr=document.createElement("tr");r.forEach(c=>{const td=document.createElement("td");td.textContent=c;tr.appendChild(td)});antidoteBody.appendChild(tr);
+  });
+}
+antidoteSearch.addEventListener("input",renderAntidotes);
+
+function updateSafety(){
+  const n=[...document.querySelectorAll(".safetyBox")].filter(x=>x.checked).length;
+  safetyStatus.innerHTML=`<strong>${n} / 6</strong>${n===6?"安全檢查跑完了。":"還有 "+(6-n)+" 項沒確認。"}`;
+  safetyStatus.className="callout "+(n===6?"green":"blue");
+}
+document.querySelectorAll(".safetyBox").forEach(x=>x.addEventListener("change",updateSafety));
+clearSafety.addEventListener("click",()=>{document.querySelectorAll(".safetyBox").forEach(x=>x.checked=false);updateSafety()});
+
+exportCsv.addEventListener("click",()=>{
+  const rows=[["Q","Title","Chapter","Rating"],...CARDS.map(x=>[x.num,x.title,x.chapter,state.ratings[x.num]||"unrated"])];
+  const csv="\ufeff"+rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");
+  a.href=url;a.download="drug_adverse_effects_learning_record.csv";a.click();URL.revokeObjectURL(url);toast("已匯出 CSV");
+});
+printBtn.addEventListener("click",()=>window.print());
+resetBtn.addEventListener("click",()=>{if(confirm("確定清除 50 題自評與 quiz 紀錄？")){state={ratings:{},quizHistory:[],lastQuiz:null};save();renderKnowledge();updateStats();toast("進度已清除")}});
+
+renderKnowledge();renderAntidotes();updateStats();updateSafety();
+</script>
+</body>
+</html>

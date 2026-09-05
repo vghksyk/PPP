@@ -1,0 +1,9 @@
+{
+  "name": "藥物副作用值班生存訓練",
+  "short_name": "藥物副作用50題",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f2742",
+  "lang": "zh-Hant"
+}
